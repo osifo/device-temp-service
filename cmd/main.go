@@ -4,7 +4,7 @@ package main
 
 import (
 	"github.com/osifo/device-temp-service"
-	"github.com/osifo/device-temp-service/temperature-driver"
+	"github.com/osifo/device-temp-service/driver"
 	"github.com/edgexfoundry/device-sdk-go/v3/pkg/startup"
 )
 
@@ -13,6 +13,6 @@ const (
 )
 
 func main() {
-	sd := driver.SimpleDriver{}
+	sd := driver.TemperatureDriver{}
 	startup.Bootstrap(serviceName, device.Version, &sd)
 }

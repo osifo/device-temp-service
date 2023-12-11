@@ -19,7 +19,7 @@ FROM ${BASE} AS builder
 
 ARG MAKE=make build
 
-WORKDIR cmd/device-temp-service
+WORKDIR /service
 
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
   copyright='Copyright (c) 2023: Intel'
@@ -35,14 +35,15 @@ RUN ${MAKE}
 # Next image - Copy built Go binary into new workspace
 FROM alpine:3.18
 LABEL license='SPDX-License-Identifier: Apache-2.0' \
-  copyright='Copyright (c) 2022: Intel'
+  copyright='Copyright (c) 2023: Tilte Labs'
 
 RUN apk add --update --no-cache
+RUN apk add lm-sensors lm-sensors-detect
 
-WORKDIR /
+# WORKDIR /
 # COPY --from=builder /device-sdk-go/example/cmd/device-simple/Attribution.txt /Attribution.txt
-COPY --from=builder cmd/ cmd/device-temp-service
-COPY --from=builder cmd/res/ cmd/device-temp-service/res/
+COPY --from=builder /service/cmd/device-temp-service /device-temp-service
+COPY --from=builder /service/cmd/res/ /res/
 
 EXPOSE 59980
 

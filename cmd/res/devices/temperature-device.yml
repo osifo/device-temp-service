@@ -1,0 +1,14 @@
+deviceList:
+  - name: temp-device-1
+    profileName: Temperature-Device
+    description: This is the temperature device
+    labels:
+      - temperature
+    # protocols:
+    #   other:
+    #     Address: device-temp
+    #     Port: 3000
+    autoEvents:
+      - interval: 5s
+        onChange: false
+        sourceName: Temperature

@@ -27,10 +27,8 @@ cmd/device-temp-service:
 
 docker:
 	docker build \
-		-f cmd/device-temp-service/Dockerfile \
-		--label "git_sha=$(GIT_SHA)" \
-		-t osifo/device-temp-service:$(GIT_SHA) \
-		-t osifo/device-temp-service:$(DOCKER_TAG) \
+		-f Dockerfile \
+		-t edgexfoundry/device-temp-service:latest \
 		.
 
 unittest:
@@ -41,7 +39,7 @@ lint:
 	@if [ "z${ARCH}" = "zx86_64" ] && which golangci-lint >/dev/null ; then golangci-lint run --config .golangci.yml ; else echo "WARNING: Linting skipped (not on x86_64 or linter not installed)"; fi
 
 install-lint:
-	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.54.2
+	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.54.2 
 
 test: unittest lint
 	GO111MODULE=on go vet ./...

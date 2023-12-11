@@ -7,7 +7,7 @@
 
 // Package driver provides a simple example implementation of
 // ProtocolDriver interface.
-package temperature-driver
+package driver
 
 import (
 	"bytes"
@@ -20,7 +20,8 @@ import (
 	"reflect"
 	"strconv"
 	"time"
-	"os/exec"
+	"math/rand"
+	// "os/exec"
 
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/v3/common"
@@ -170,25 +171,34 @@ func (s *TemperatureDriver) HandleReadCommands(deviceName string, protocols map[
 	for _, req := range reqs {
 		var cv *sdkModels.CommandValue
 		switch req.DeviceResourceName {
-		case "Temperature":
-			temp_out, err := exec.Command("cat", "sys/class/thermal/thermal_zone11/temp").Output()
-			
-			if err != nil {
-				return nil, err
-			}
+			case "Temperature":
+				// temp_out, err := exec.Command("cat", "sys/class/thermal/thermal_zone11/temp").Output()
+				// if err != nil {
+				// 	s.lc.Debugf(" ========== an error has occurred ========== ", err)
+				// 	return nil, err
+				// }
 
-			temp_val, err := strconv.ParseInt(string(temp_out[:len(temp_out)-1]), 10, 64)
+				// s.lc.Debugf(" ========== output ========== ", temp_out)
 
-			if err == nil {
+				// temp_val, err := strconv.ParseInt(string(temp_out[:len(temp_out)-1]), 10, 64)
+
+				// if err == nil {
+				// 	cv, _ = sdkModels.NewCommandValue(req.DeviceResourceName, common.ValueTypeInt64, int64(temp_val))
+				// 	res[0] = cv
+				// } else {
+				// 	return nil, err
+				// }
+				temp_val := rand.Int63n(70)
+
 				cv, _ = sdkModels.NewCommandValue(req.DeviceResourceName, common.ValueTypeInt64, int64(temp_val))
-				res[0] = cv
-			} else {
-				return nil, err
-			}
+				s.lc.Debugf(" ========== output ========== ", cv)
 
-		// case "Motion":
-		// 	cv, _ = sdkModels.NewCommandValue(req.DeviceResourceName, common.ValueTypeInt32, s.xRotation)
-		// }
+			case "Motion":
+				err := fmt.Sprintf("[DEBUG] ======== The CommandValue received (%v) does not have a handler logic.", req.DeviceResourceName)
+				fmt.Printf(err)
+
+				return nil, errors.New(err)
+		}
 
 		res = append(res, cv)
 	}

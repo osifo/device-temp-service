@@ -9,7 +9,7 @@ Writable:
 Service:
   Host: "localhost"
   Port: 59980 # Device service are assigned the 599xx range
-  StartupMsg: device simple started
+  StartupMsg: temperature device started
 
 MessageBus:
   Optional:
@@ -22,7 +22,7 @@ Device:
   ProfilesDir: ./res/profiles
   DevicesDir: ./res/devices
   # Only needed if device service implements auto provisioning
-  ProvisionWatchersDir: ./res/provisionwatchers
+  # ProvisionWatchersDir: ./res/provisionwatchers
 # Example structured custom configuration
 SimpleCustom:
   OnImageLocation: ./res/on.png
